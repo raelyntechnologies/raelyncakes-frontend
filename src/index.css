@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Raelyn Cakes - Warm Pink & Fresh Teal Theme */
+    --background: 0 0% 99%;
+    --foreground: 340 20% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 340 20% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 340 20% 15%;
+
+    /* Primary - Warm Pink */
+    --primary: 340 90% 70%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 340 90% 60%;
+    --primary-glow: 340 100% 80%;
+
+    /* Secondary - Fresh Teal */
+    --secondary: 172 66% 55%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 172 66% 45%;
+
+    /* Accent - Soft Cream */
+    --accent: 35 100% 96%;
+    --accent-foreground: 340 20% 15%;
+
+    --muted: 340 10% 95%;
+    --muted-foreground: 340 10% 45%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 340 20% 90%;
+    --input: 340 20% 90%;
+    --ring: 340 90% 70%;
+
+    --radius: 1rem;
+
+    /* Custom gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(340, 90%, 70%) 0%, hsl(340, 100%, 80%) 50%, hsl(20, 100%, 85%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(340, 50%, 98%) 0%, hsl(35, 100%, 98%) 50%, hsl(172, 30%, 97%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0, 0%, 100%) 0%, hsl(340, 30%, 99%) 100%);
+    --gradient-teal: linear-gradient(135deg, hsl(172, 66%, 55%) 0%, hsl(172, 80%, 65%) 100%);
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(340 30% 50% / 0.15);
+    --shadow-card: 0 8px 30px -8px hsl(340 30% 40% / 0.12);
+    --shadow-button: 0 4px 14px -4px hsl(340 90% 70% / 0.4);
+    --shadow-teal: 0 4px 14px -4px hsl(172 66% 55% / 0.4);
+    --shadow-lifted: 0 20px 50px -15px hsl(340 30% 30% / 0.2);
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 340 20% 25%;
+    --sidebar-primary: 340 90% 70%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 340 30% 96%;
+    --sidebar-accent-foreground: 340 20% 25%;
+    --sidebar-border: 340 20% 92%;
+    --sidebar-ring: 340 90% 70%;
+  }
+
+  .dark {
+    --background: 340 20% 8%;
+    --foreground: 340 10% 95%;
+
+    --card: 340 20% 12%;
+    --card-foreground: 340 10% 95%;
+
+    --popover: 340 20% 12%;
+    --popover-foreground: 340 10% 95%;
+
+    --primary: 340 90% 65%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 340 90% 55%;
+    --primary-glow: 340 100% 75%;
+
+    --secondary: 172 66% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 172 66% 40%;
+
+    --accent: 340 20% 18%;
+    --accent-foreground: 340 10% 95%;
+
+    --muted: 340 15% 18%;
+    --muted-foreground: 340 10% 60%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 340 15% 20%;
+    --input: 340 15% 20%;
+    --ring: 340 90% 65%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(340, 90%, 55%) 0%, hsl(340, 100%, 65%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(340, 20%, 10%) 0%, hsl(340, 25%, 8%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(340, 20%, 14%) 0%, hsl(340, 20%, 10%) 100%);
+    --gradient-teal: linear-gradient(135deg, hsl(172, 66%, 45%) 0%, hsl(172, 80%, 55%) 100%);
+
+    --shadow-soft: 0 4px 20px -4px hsl(0 0% 0% / 0.3);
+    --shadow-card: 0 8px 30px -8px hsl(0 0% 0% / 0.4);
+    --shadow-button: 0 4px 14px -4px hsl(340 90% 50% / 0.5);
+    --shadow-teal: 0 4px 14px -4px hsl(172 66% 45% / 0.5);
+    --shadow-lifted: 0 20px 50px -15px hsl(0 0% 0% / 0.5);
+
+    --sidebar-background: 340 20% 10%;
+    --sidebar-foreground: 340 10% 90%;
+    --sidebar-primary: 340 90% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 340 20% 15%;
+    --sidebar-accent-foreground: 340 10% 90%;
+    --sidebar-border: 340 20% 18%;
+    --sidebar-ring: 340 90% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-poppins antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+
+  .gradient-teal {
+    background: var(--gradient-teal);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-button {
+    box-shadow: var(--shadow-button);
+  }
+
+  .shadow-teal {
+    box-shadow: var(--shadow-teal);
+  }
+
+  .shadow-lifted {
+    box-shadow: var(--shadow-lifted);
+  }
+
+  .text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass {
+    background: hsl(0 0% 100% / 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .dark .glass {
+    background: hsl(340 20% 12% / 0.8);
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float 6s ease-in-out infinite 2s;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
