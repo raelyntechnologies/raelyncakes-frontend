@@ -15,6 +15,7 @@ import { selectCartItemCount, openCart } from "@/store/cartSlice";
 import { selectUser, selectIsAuthenticated, selectIsAdmin, logout } from "@/store/authSlice";
 import { selectFavoriteCount } from "@/store/favoritesSlice";
 import { toast } from "@/hooks/use-toast";
+import API_URL from "@/config/api";
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -40,8 +41,6 @@ export const Header = () => {
     : baseNavLinks;
 
   const isActive = (path: string) => location.pathname === path;
-
-   const API_URL = "http://localhost:9001/api/v1";
 
   const handleLogout = useCallback(async () => {
   const token = localStorage.getItem("access_token");
