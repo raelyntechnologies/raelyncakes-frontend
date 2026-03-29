@@ -21,7 +21,7 @@ const Signup = () => {
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [dateofbirth, setDateOfBirth] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +30,7 @@ const Signup = () => {
   const [errors, setErrors] = useState<{
     name?: string;
     phone?: string;
-    dateOfBirth?: string;
+    dateofbirth?: string;
     password?: string;
     confirmPassword?: string;
     api?: string;
@@ -63,7 +63,7 @@ const Signup = () => {
     else if (!indianPhoneRegex.test(phone))
       newErrors.phone = "Enter valid 10-digit Indian mobile number";
 
-    if (!dateOfBirth) newErrors.dateOfBirth = "Date of Birth is required";
+    if (!dateofbirth) newErrors.dateofbirth = "Date of Birth is required";
 
     if (!password) newErrors.password = "Password is required";
     else if (password.length < 8)
@@ -89,7 +89,7 @@ const Signup = () => {
 
   const validateDOB = (dateStr: string) => {
     if (!dateStr) {
-      newErrorsdob.dateOfBirth = "Date of Birth is required";
+      newErrorsdob.dateofbirth = "Date of Birth is required";
       setErrors(newErrorsdob);
       return false;
     }
@@ -98,7 +98,7 @@ const Signup = () => {
     
     // Invalid date
     if (!isValid(dob)) {
-      newErrorsdob.dateOfBirth = "Please select a valid date";
+      newErrorsdob.dateofbirth = "Please select a valid date";
       setErrors(newErrorsdob);
       return false;
     }
@@ -106,12 +106,12 @@ const Signup = () => {
     // Too young (under 13)
     const age = differenceInYears(new Date(), dob);
     if (age < MIN_AGE) {
-      newErrorsdob.dateOfBirth = `You must be at least ${MIN_AGE} years old`;
+      newErrorsdob.dateofbirth = `You must be at least ${MIN_AGE} years old`;
       setErrors(newErrorsdob);
       return false;
     }
 
-    setErrors(prev => ({ ...prev, dateOfBirth: "" }));
+    setErrors(prev => ({ ...prev, dateofbirth: "" }));
     return true;
   };
 
@@ -137,7 +137,7 @@ const Signup = () => {
           name: name.trim(),
           phone: phone.trim(),
           password: password,
-          dateOfBirth: dateOfBirth
+          dateofbirth: dateofbirth
         })
       });
 
@@ -236,26 +236,26 @@ const Signup = () => {
                 <Calendar className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground z-20 pointer-events-none" />
                 <Input
                   type="date"
-                  value={dateOfBirth}
+                  value={dateofbirth}
                   max={maxDateStr}
                   onChange={handleDateChange}
                   className={`
                     w-full pl-12 pr-4 py-2
                     min-h-[44px] h-auto
-                    ${errors.dateOfBirth ? "border-destructive focus:border-destructive" : ""}
+                    ${errors.dateofbirth ? "border-destructive focus:border-destructive" : ""}
                   `}
                   placeholder="Select your date of birth"
                 />
               </div>
               
-              {errors.dateOfBirth && (
-                <p className="text-sm text-destructive">{errors.dateOfBirth}</p>
+              {errors.dateofbirth && (
+                <p className="text-sm text-destructive">{errors.dateofbirth}</p>
               )}
               
               {/* Age preview */}
-             {dateOfBirth && !errors.dateOfBirth && (
+             {dateofbirth && !errors.dateofbirth && (
                 <p className="text-xs text-muted-foreground">
-                  ✓ Age: <span className="font-medium">{differenceInYears(new Date(), new Date(dateOfBirth))} years</span>
+                  ✓ Age: <span className="font-medium">{differenceInYears(new Date(), new Date(dateofbirth))} years</span>
                 </p>
               )}
             </div>
