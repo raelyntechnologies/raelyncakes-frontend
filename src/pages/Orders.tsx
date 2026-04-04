@@ -11,9 +11,10 @@ import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CartDrawer } from "@/components/CartDrawer";
-import { useAppSelector } from "@/store/hooks";
-import { selectOrders } from "@/store/orderSlice";
-import { selectUser } from "@/store/authSlice";
+import { setLoading } from "@/store/authSlice";
+import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import API_URL from "@/config/api";
 
 const statusColors: Record<string, string> = {
   pending: "bg-amber-100 text-amber-700",
@@ -34,12 +35,35 @@ const statusLabels: Record<string, string> = {
 };
 
 const Orders = () => {
-  const orders = useAppSelector(selectOrders);
-  const user = useAppSelector(selectUser);
+  const { toast } = useToast();
+  const [orders, setOrders] = useState([]);
 
-  const userOrders = user
-    ? orders.filter((o) => String(o.user_id) === String(user.userid))
-    : orders;
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(`${API_URL}/orders/orders`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            ...(localStorage.getItem("access_token") && {
+              "Authorization": `Bearer ${localStorage.getItem("access_token")}`
+            })
+          }
+        });
+        if (!response.ok) throw new Error("Failed to fetch orders");
+        const data = await response.json();
+        setOrders(data);
+      } catch (error: any) {
+        toast({
+          title: "Failed to fetch orders",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrders();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -52,7 +76,7 @@ const Orders = () => {
           Track and manage your cake orders
         </p>
 
-        {userOrders.length === 0 ? (
+        {orders.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -75,7 +99,7 @@ const Orders = () => {
           </motion.div>
         ) : (
           <div className="mt-8 space-y-4">
-            {userOrders.map((order, index) => (
+            {orders.map((order, index) => (
               <motion.div
                 key={order.id}
                 initial={{ opacity: 0, y: 20 }}

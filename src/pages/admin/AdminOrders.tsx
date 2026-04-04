@@ -109,7 +109,7 @@ const AdminOrders = () => {
 
   const handleUpdateStatus = async (orderId: string, status: OrderStatus) => {
   try {
-    const res = await fetch(`${API_URL}/orders/${orderId}/status`, {
+    const res = await fetch(`${API_URL}/orders/status/${orderId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -225,6 +225,7 @@ const AdminOrders = () => {
                     <TableRow>
                       <TableHead>Order ID</TableHead>
                       <TableHead>Customer</TableHead>
+                      <TableHead>Address</TableHead>
                       <TableHead>Items</TableHead>
                       <TableHead>Total</TableHead>
                       <TableHead>Delivery</TableHead>
@@ -253,12 +254,18 @@ const AdminOrders = () => {
                           className="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50"
                         >
                           <TableCell className="font-mono text-sm">
-                            #{String(order.id).slice(0, 8)}
+                            {String(order.id).slice(0, 8)}
                           </TableCell>
                           <TableCell>
                             <div>
-                              {/* <p className="font-medium">{order.address.name}</p> */}
-                              <p className="text-xs text-muted-foreground">{order.user_phone}</p>
+                              <p className="font-medium">{order.address.name}</p>
+                              <p className="font-medium">{order.user_phone}</p>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div>
+                              <p>{order.address.street}</p>
+                              <p>{order.address.city}, {order.address.state} {order.address.pincode}</p>
                             </div>
                           </TableCell>
                           <TableCell>

@@ -512,7 +512,7 @@ export const cakesData: Cake[] = [
     rating: 4.8,
     reviewCount: 145,
     image: "/cakes/chocolaty/chocolate-almond.jpg",
-    description: "Ferrero-inspired torte with roasted hazelnuts and praline",
+    description: "Ferrero-inspired torte with roasted almonds and praline",
     bestseller: false,
     eggless: false,
     sugarFree: false,

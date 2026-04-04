@@ -29,7 +29,7 @@ const OrderSuccess = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`${API_URL}/orders/orders/${orderId}`, {
+        const response = await fetch(`${API_URL}/orders/details/${orderId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
