@@ -66,9 +66,8 @@ const AdminUsers = () => {
     return users.filter((user) => {
       const matchesSearch =
         String(user.id).toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.user_phone.includes(searchQuery);
-      const matchesStatus = statusFilter === "all" || user.status === statusFilter;
-      return matchesSearch && matchesStatus;
+        user.phone.includes(searchQuery);
+      return matchesSearch;
     });
   }, [users, searchQuery, statusFilter]);
 
