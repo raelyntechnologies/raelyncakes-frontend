@@ -65,7 +65,7 @@ const AdminUsers = () => {
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
       const matchesSearch =
-        String(user.id).toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.name.includes(searchQuery.toLowerCase()) ||
         user.phone.includes(searchQuery);
       return matchesSearch;
     });
@@ -84,7 +84,7 @@ const AdminUsers = () => {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search by users ID or phone..."
+            placeholder="Search by name or phone..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
