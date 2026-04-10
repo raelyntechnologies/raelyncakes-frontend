@@ -4,24 +4,21 @@ import {
   IndianRupee,
   ShoppingBag,
   Cake,
-  Users,
   TrendingUp,
-  ArrowUpRight,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
-import { updateOrderStatus } from "@/store/orderSlice";
 import { selectAllCakes } from "@/store/cakeSlice";
-import { OrderStatus } from "@/types/order";
 import StatsCard from "@/components/admin/StatsCard";
-import RecentOrdersTable from "@/components/admin/RecentOrdersTable";
 import RevenueChart from "@/components/admin/RevenueChart";
 import { setLoading } from "@/store/authSlice";
 import { useToast } from "@/hooks/use-toast";
 import API_URL from "@/config/api";
+import { CartesianGrid, Cell, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+
+const COLORS = ["#E91E8C", "#26A69A", "#FFB800", "#7C3AED", "#F97316", "#10B981"];
 
 const AdminDashboard = () => {
-  const dispatch = useAppDispatch();
   const { toast } = useToast();
   const [orders, setOrders] = useState([]); 
   const cakes = useAppSelector(selectAllCakes);
@@ -52,6 +49,15 @@ const AdminDashboard = () => {
     };
     fetchOrders();
   }, []);
+
+  // Category distribution
+  const categoryData = useMemo(() => {
+    const categories: Record<string, number> = {};
+    cakes.forEach((cake) => {
+      categories[cake.category] = (categories[cake.category] || 0) + 1;
+    });
+    return Object.entries(categories).map(([name, value]) => ({ name, value }));
+  }, [cakes]);
 
   const stats = useMemo(() => {
     const totalRevenue = orders
@@ -86,18 +92,15 @@ const AdminDashboard = () => {
       }));
   }, [cakes]);
 
-  const handleUpdateStatus = (orderId: string, status: OrderStatus) => {
-    const messages: Record<OrderStatus, string> = {
-      pending: "Order placed",
-      confirmed: "Order confirmed by bakery",
-      baking: "Your cake is being baked with love",
-      out_for_delivery: "Order is out for delivery",
-      delivered: "Order delivered successfully",
-      cancelled: "Order has been cancelled",
-    };
-
-    dispatch(updateOrderStatus({ orderId, status, message: messages[status] }));
-  };
+   // Monthly trend (mock)
+  const monthlyTrend = useMemo(() => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return months.map((month) => ({
+      name: month,
+      revenue: Math.floor(Math.random() * 200000) + 100000,
+      orders: Math.floor(Math.random() * 100) + 50,
+    }));
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -189,22 +192,79 @@ const AdminDashboard = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Recent Orders */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Recent Orders</CardTitle>
-          <a
-            href="/admin/orders"
-            className="text-sm text-primary hover:underline flex items-center gap-1"
-          >
-            View All <ArrowUpRight className="w-4 h-4" />
-          </a>
-        </CardHeader>
-        <CardContent>
-          <RecentOrdersTable orders={orders} onUpdateStatus={handleUpdateStatus} />
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Monthly Trend Line Chart */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Monthly Trend</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-[300px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={monthlyTrend}>
+                          <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                          <XAxis dataKey="name" className="text-xs fill-muted-foreground" />
+                          <YAxis
+                            className="text-xs fill-muted-foreground"
+                            tickFormatter={(value) => `₹${value / 1000}k`}
+                          />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: "hsl(var(--card))",
+                              border: "1px solid hsl(var(--border))",
+                              borderRadius: "8px",
+                            }}
+                            formatter={(value: number) => [`₹${value.toLocaleString()}`, "Revenue"]}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="revenue"
+                            stroke="hsl(var(--primary))"
+                            strokeWidth={3}
+                            dot={{ fill: "hsl(var(--primary))", strokeWidth: 2 }}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+        {/* Category Distribution Pie Chart */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Cakes by Category</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-[300px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={categoryData}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={60}
+                            outerRadius={100}
+                            paddingAngle={5}
+                            dataKey="value"
+                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                            labelLine={false}
+                          >
+                            {categoryData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            ))}
+                          </Pie>
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: "hsl(var(--card))",
+                              border: "1px solid hsl(var(--border))",
+                              borderRadius: "8px",
+                            }}
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+      </div>
     </div>
   );
 };
