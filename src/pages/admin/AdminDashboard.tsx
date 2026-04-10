@@ -92,7 +92,17 @@ const AdminDashboard = () => {
       }));
   }, [cakes]);
 
-   // Monthly trend (mock)
+   // Daily trend (mock)
+  const dailyTrend = useMemo(() => {
+    const months = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    return months.map((month) => ({
+      name: month,
+      revenue: Math.floor(Math.random() * 200000) + 100000,
+      orders: Math.floor(Math.random() * 100) + 50,
+    }));
+  }, []);
+
+  // Monthly trend (mock)
   const monthlyTrend = useMemo(() => {
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     return months.map((month) => ({
@@ -152,10 +162,43 @@ const AdminDashboard = () => {
 
       {/* Charts and Tables */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Revenue Chart */}
         <div className="lg:col-span-2">
-          <RevenueChart data={revenueData} />
-        </div>
+        {/* Daily Trend Line Chart */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Daily Trend</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-[300px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={dailyTrend}>
+                          <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                          <XAxis dataKey="name" className="text-xs fill-muted-foreground" />
+                          <YAxis
+                            className="text-xs fill-muted-foreground"
+                            tickFormatter={(value) => `₹${value / 1000}k`}
+                          />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: "hsl(var(--card))",
+                              border: "1px solid hsl(var(--border))",
+                              borderRadius: "8px",
+                            }}
+                            formatter={(value: number) => [`₹${value.toLocaleString()}`, "Revenue"]}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="revenue"
+                            stroke="hsl(var(--primary))"
+                            strokeWidth={3}
+                            dot={{ fill: "hsl(var(--primary))", strokeWidth: 2 }}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+                </div>
 
         {/* Top Selling Cakes */}
         <Card>
@@ -193,6 +236,7 @@ const AdminDashboard = () => {
         </Card>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
         {/* Monthly Trend Line Chart */}
                 <Card>
                   <CardHeader>
@@ -228,6 +272,7 @@ const AdminDashboard = () => {
                     </div>
                   </CardContent>
                 </Card>
+                </div>
         {/* Category Distribution Pie Chart */}
                 <Card>
                   <CardHeader>

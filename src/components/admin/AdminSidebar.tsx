@@ -23,7 +23,6 @@ const navItems = [
   { path: "/admin/cakes", icon: Cake, label: "Cakes", end: false },
   { path: "/admin/users", icon: Users, label: "Users", end: false },
   { path: "/admin/orders", icon: ShoppingBag, label: "Orders", end: false },
-  { path: "/admin/analytics", icon: BarChart3, label: "Analytics", end: false },
   { path: "/admin/settings", icon: Settings, label: "Settings", end: false },
 ];
 

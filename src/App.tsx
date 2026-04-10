@@ -23,7 +23,6 @@ import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminCakes from "./pages/admin/AdminCakes";
 import AdminOrders from "./pages/admin/AdminOrders";
-import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminSettings from "./pages/admin/AdminSettings";
 import ChangePassword from "./pages/ChangePassword";
 import AdminUsers from "./pages/admin/AdminUsers";
@@ -59,7 +58,6 @@ const App = () => (
               <Route path="cakes" element={<AdminCakes />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="orders" element={<AdminOrders />} />
-              <Route path="analytics" element={<AdminAnalytics />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 
