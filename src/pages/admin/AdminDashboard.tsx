@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   IndianRupee,
@@ -10,17 +10,48 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
-import { selectOrders, updateOrderStatus } from "@/store/orderSlice";
+import { updateOrderStatus } from "@/store/orderSlice";
 import { selectAllCakes } from "@/store/cakeSlice";
 import { OrderStatus } from "@/types/order";
 import StatsCard from "@/components/admin/StatsCard";
 import RecentOrdersTable from "@/components/admin/RecentOrdersTable";
 import RevenueChart from "@/components/admin/RevenueChart";
+import { setLoading } from "@/store/authSlice";
+import { useToast } from "@/hooks/use-toast";
+import API_URL from "@/config/api";
 
 const AdminDashboard = () => {
   const dispatch = useAppDispatch();
-  const orders = useAppSelector(selectOrders);
+  const { toast } = useToast();
+  const [orders, setOrders] = useState([]); 
   const cakes = useAppSelector(selectAllCakes);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(`${API_URL}/orders/orders`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            ...(localStorage.getItem("access_token") && {
+              "Authorization": `Bearer ${localStorage.getItem("access_token")}`
+            })
+          }
+        });
+        if (!response.ok) throw new Error("Failed to fetch orders");
+        const data = await response.json();
+        setOrders(data);
+      } catch (error: any) {
+        toast({
+          title: "Failed to fetch orders",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrders();
+  }, []);
 
   const stats = useMemo(() => {
     const totalRevenue = orders
