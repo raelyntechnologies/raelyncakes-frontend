@@ -82,10 +82,10 @@ const About = () => {
             </span>
             <h1 className="mb-6 text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">
               Baking Happiness{" "}
-              <span className="text-gradient-primary">Since 2025</span>
+              <span className="text-gradient-primary">Since 2026</span>
             </h1>
             <p className="text-lg text-muted-foreground">
-              What started as a home kitchen passion has grown into Kanyakumari's most loved 
+              What started as a home kitchen passion has grown into India's most loved 
               artisan bakery, one cake at a time.
             </p>
           </motion.div>
@@ -107,7 +107,7 @@ const About = () => {
               </h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  Raelyn Cakes began in 2025 when founder Raelyn started baking 
+                  Raelyn Cakes began in 2026 when founder Raelyn started baking 
                   cakes for friends and family from her home kitchen. What started as a 
                   lockdown hobby quickly became a sensation, with orders pouring in through 
                   word of mouth.

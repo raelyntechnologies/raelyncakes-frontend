@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { Instagram, MessageCircle, Mail, Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/store/hooks";
 import { selectIsAdmin } from "@/store/authSlice";
@@ -61,17 +61,26 @@ export const Footer = () => {
               sweeter since 2025.
             </p>
             <div className="mt-6 flex gap-3">
-              {[Instagram, Phone].map((Icon, i) => (
-                <motion.a
-                  key={i}
-                  href="#"
-                  whileHover={{ y: -3 }}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-foreground/10 transition-colors hover:bg-primary hover:text-primary-foreground"
-                >
-                  <Icon className="h-5 w-5" />
-                </motion.a>
-              ))}
-            </div>
+            {[
+              { Icon: MessageCircle, href: "https://wa.me/916380080915" },
+              { Icon: Phone, href: "tel:+916380080915" },
+              { Icon: Instagram, href: "https://instagram.com/raelyncakes" },
+              { Icon: Mail, href: "mailto:raelyntechnologies@gmail.com" }
+            ].map(({ Icon, href }, i) => (
+              <motion.a
+                key={i}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -3, scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="group flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 backdrop-blur-sm border border-border/50 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 hover:bg-gradient-to-br hover:from-primary hover:to-primary-foreground hover:border-primary/50 active:scale-95"
+                aria-label={`Connect on ${Icon.displayName || 'social media'}`}
+              >
+                <Icon className="h-6 w-6 group-hover:scale-110 transition-transform duration-200" />
+              </motion.a>
+            ))}
+          </div>
           </div>
 
           {/* Quick Links */}

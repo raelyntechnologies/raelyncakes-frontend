@@ -175,7 +175,7 @@ const Occasions = () => {
                 occasion, and we'll design something magical just for you.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                <Link to="/contact">
+                <Link to="/custom">
                   <Button variant="hero-outline" size="lg">
                     Request Custom Cake
                   </Button>

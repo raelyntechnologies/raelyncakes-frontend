@@ -25,7 +25,7 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Visit Us",
-    details: ["23/5, Eraviputhenthurai", "Thoothoor (PO), Kanyakumari - 629176"],
+    details: ["Eraviputhenthurai", "Thoothoor (PO), Kanyakumari - 629176"],
   },
   // {
   //   icon: Phone,
@@ -35,7 +35,7 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Call Us",
-    details: ["+91 63800 80915"],
+    details: ["+91 6380080915"],
   },
   {
     icon: Mail,
@@ -55,9 +55,10 @@ const contactInfo = [
 ];
 
 const socialLinks = [
-  { icon: Instagram, label: "Instagram", handle: "@raelyncakes", color: "from-purple-500 to-pink-500" },
-  { icon: Facebook, label: "Facebook", handle: "RaelynCakes", color: "from-blue-600 to-blue-500" },
-  { icon: MessageCircle, label: "WhatsApp", handle: "+91 63800 80915", color: "from-green-500 to-green-400" },
+  { icon: MessageCircle, label: "WhatsApp", href: "https://wa.me/916380080915", handle: "+91 6380080915", color: "from-green-500 to-green-400" },
+  { icon: Phone, label: "Phone", href: "tel:+916380080915", handle: "+91 6380080915", color: "from-blue-600 to-blue-500" },
+  { icon: Instagram, label: "Instagram", href: "https://instagram.com/raelyncakes", handle: "raelyncakes", color: "from-purple-500 to-pink-500" },
+  { icon: Mail, label: "Email", href: "mailto:raelyntechnologies@gmail.com", handle: "raelyntechnologies@gmail.com", color: "from-yellow-600 to-yellow-500" },
 ];
 
 const faqs = [
@@ -323,7 +324,7 @@ const Contact = () => {
                 <div className="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
                   <div className="text-center">
                     <MapPin className="mx-auto mb-2 h-12 w-12 text-primary" />
-                    <p className="font-medium text-foreground">23/5, Eraviputhenthurai</p>
+                    <p className="font-medium text-foreground">Eraviputhenthurai</p>
                     <p className="text-sm text-muted-foreground">Thoothoor (PO), Kanyakumari - 629176</p>
                   </div>
                 </div>
