@@ -256,12 +256,12 @@ const Index = () => {
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { name: "Chocolate", emoji: "🍫", count: 10, color: "from-amber-900 to-amber-700" },
-              { name: "Red Velvet", emoji: "❤️", count: 8, color: "from-rose-600 to-rose-400" },
-              { name: "Vanilla", emoji: "🍦", count: 7, color: "from-amber-100 to-amber-50" },
-              { name: "Fruit", emoji: "🍓", count: 6, color: "from-red-400 to-orange-300" },
-              { name: "Black Forest", emoji: "🍒", count: 6, color: "from-neutral-800 to-neutral-600" },
-              { name: "Special", emoji: "✨", count: 13, color: "from-primary to-primary-glow" },
+              { name: "Classy", emoji: "🍦", count: 5, color: "from-amber-100 to-amber-50" },
+              { name: "Yummy", emoji: "❤️", count: 4, color: "from-rose-600 to-rose-400" },
+              { name: "Fruity", emoji: "🍓", count: 8, color: "from-red-400 to-orange-300" },
+              { name: "Nutty", emoji: "🍒", count: 12, color: "from-neutral-800 to-neutral-600" },
+              { name: "Chocolaty", emoji: "🍫", count: 15, color: "from-amber-900 to-amber-700" },
+              { name: "Browny", emoji: "✨", count: 8, color: "from-primary to-primary-glow" },
             ].map((category, i) => (
               <motion.div
                 key={category.name}
@@ -310,12 +310,20 @@ const Index = () => {
                 your vision to life. Let's create something special together!
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-                <Button variant="hero-outline" size="xl">
-                  Start Custom Order
-                </Button>
-                <Button variant="hero-outline" size="xl">
-                  <span className="mr-2">📞</span> Call Us Now
-                </Button>
+                <Link to="/custom">
+                  <Button variant="hero-outline" size="xl">
+                    Start Custom Order
+                  </Button>
+                </Link>
+                <Button 
+                variant="hero-outline" 
+                size="xl"
+                onClick={() => window.location.href = 'tel:+916380080915'}
+                aria-label="Call Raelyn Cakes at +91 6380080915"
+              >
+                <span className="mr-1 sm:mr-2">📞</span>
+                <span className="truncate">Call Us Now</span>
+              </Button>
               </div>
             </div>
 

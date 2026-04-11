@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Instagram, Facebook, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Instagram, Mail, Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/store/hooks";
 import { selectIsAdmin } from "@/store/authSlice";
@@ -11,9 +11,8 @@ export const Footer = () => {
 
   const quickLinks = [
     { label: "All Cakes", href: "/cakes" },
-    { label: "Bestsellers", href: "/cakes" },
-    { label: "Custom Orders", href: "/contact" },
-    { label: "Gift Cards", href: "#" },
+    { label: "Best Sellers", href: "/cakes" },
+    { label: "Custom Orders", href: "/custom" },
     ...(isAdmin ? [{ label: "Admin", href: "/admin" }] : []),
   ];
 
@@ -31,8 +30,8 @@ export const Footer = () => {
             </div>
             <div className="flex w-full max-w-md gap-2">
               <input
-                type="email"
-                placeholder="Enter your email"
+                type="phone"
+                placeholder="Enter your phone number"
                 className="flex-1 rounded-xl bg-primary-foreground/10 px-4 py-3 text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <Button variant="hero" size="lg">
@@ -62,7 +61,7 @@ export const Footer = () => {
               sweeter since 2025.
             </p>
             <div className="mt-6 flex gap-3">
-              {[Instagram, Facebook, Twitter].map((Icon, i) => (
+              {[Instagram, Phone].map((Icon, i) => (
                 <motion.a
                   key={i}
                   href="#"
@@ -97,15 +96,16 @@ export const Footer = () => {
             <h4 className="mb-4 text-lg font-semibold">Categories</h4>
             <ul className="space-y-2">
               {[
-                "Chocolate Cakes",
-                "Red Velvet",
-                "Vanilla Dreams",
-                "Fruit Cakes",
-                "Wedding Cakes",
+                "Classy Cakes",
+                "Yummy Cakes",
+                "Fruity Cakes",
+                "Nutty Cakes",
+                "Chocolaty Cakes",
+                "Browny Cakes",
               ].map((link) => (
                 <li key={link}>
                   <Link
-                    to="#"
+                    to="/cakes"
                     className="text-sm text-primary-foreground/70 transition-colors hover:text-primary"
                   >
                     {link}
@@ -121,11 +121,11 @@ export const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center gap-3 text-sm text-primary-foreground/70">
                 <MapPin className="h-4 w-4 text-primary" />
-                23/5, Eraviputhenthurai, Thoothoor(PO), Kanyakumari - 629176
+                Eraviputhenthurai, Thoothoor(PO), Kanyakumari - 629176
               </li>
               <li className="flex items-center gap-3 text-sm text-primary-foreground/70">
                 <Phone className="h-4 w-4 text-primary" />
-                +91 63800 80915
+                +91 6380080915
               </li>
               <li className="flex items-center gap-3 text-sm text-primary-foreground/70">
                 <Mail className="h-4 w-4 text-primary" />
@@ -140,7 +140,7 @@ export const Footer = () => {
       <div className="border-t border-primary-foreground/10">
         <div className="container flex flex-col items-center justify-between gap-4 py-6 md:flex-row">
           <p className="text-sm text-primary-foreground/70">
-            © {2025} Raelyn Technologies. All rights reserved.
+            © {currentYear} Raelyn Technologies. All rights reserved.
           </p>
           <div className="flex gap-6">
             <Link
