@@ -22,7 +22,7 @@ const features = [
   {
     icon: Clock,
     title: "Same Day Delivery",
-    description: "Order before 2 PM",
+    description: "Order before 12 PM",
   },
   {
     icon: Shield,
