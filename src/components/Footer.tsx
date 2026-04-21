@@ -11,8 +11,9 @@ export const Footer = () => {
 
   const quickLinks = [
     { label: "All Cakes", href: "/cakes" },
-    { label: "Best Sellers", href: "/cakes" },
-    { label: "Custom Orders", href: "/custom" },
+    { label: "Occasions", href: "/occasions" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
     ...(isAdmin ? [{ label: "Admin", href: "/admin" }] : []),
   ];
 

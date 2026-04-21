@@ -95,9 +95,9 @@ const Index = () => {
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Link to="/custom">
+                <Link to="/login">
                   <Button variant="outline" size="xl" className="w-full sm:w-auto">
-                    Custom Order
+                    Sign In
                   </Button>
                 </Link>
               </motion.div>
@@ -111,8 +111,9 @@ const Index = () => {
               >
                 {[
                   { value: "50+", label: "Cake Varieties" },
-                  { value: "1,000+", label: "Happy Customers" },
-                  { value: "4.9", label: "Rating" },
+                  { value: "100+", label: "Happy Customers" },
+                  { value: "1000+", label: "Total Sales" },
+                  { value: "4.9", label: "Overall Rating" },
                 ].map((stat, i) => (
                   <div key={i} className="text-center">
                     <p className="text-2xl font-bold text-foreground md:text-3xl">
@@ -303,16 +304,16 @@ const Index = () => {
           >
             <div className="relative z-10">
               <h2 className="text-3xl font-bold text-primary-foreground md:text-4xl">
-                Need a Custom Cake?
+                Need a Cake?
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-primary-foreground/90">
                 From themed birthday cakes to elegant wedding tiers, we bring
                 your vision to life. Let's create something special together!
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-                <Link to="/custom">
+                <Link to="/cakes">
                   <Button variant="hero-outline" size="xl">
-                    Start Custom Order
+                    Start Order
                   </Button>
                 </Link>
                 <Button 
