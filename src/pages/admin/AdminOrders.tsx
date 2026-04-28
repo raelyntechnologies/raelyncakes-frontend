@@ -269,17 +269,37 @@ const AdminOrders = () => {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div className="max-w-[200px]">
-                              {items.length === 0 ? (
-                                <p className="text-sm text-muted-foreground">No items</p>
-                              ) : (
-                                items.map((item, i) => (
-                                  <p key={i} className="text-sm truncate">
+                            <div className="max-w-[400px] space-y-2">
+                            {items.length === 0 ? (
+                              <p className="text-sm text-muted-foreground">No items</p>
+                            ) : (
+                              items.map((item, i) => (
+                                <div key={i} className="text-sm border-b pb-2 last:border-0">
+                                  
+                                  {/* Main Line */}
+                                  <p className="font-medium truncate">
                                     {item.quantity}x {item.cake_name} ({item.weight}kg)
                                   </p>
-                                ))
-                              )}
-                            </div>
+
+                                  {/* Message */}
+                                  {item.cake_message && (
+                                    <p className="text-muted-foreground break-words">
+                                      <span className="font-medium text-foreground">Message:</span>{" "}
+                                      {item.cake_message}
+                                    </p>
+                                  )}
+
+                                  {/* Notes */}
+                                  {item.cake_notes && (
+                                    <p className="text-muted-foreground break-words">
+                                      <span className="font-medium text-foreground">Notes:</span>{" "}
+                                      {item.cake_notes}
+                                    </p>
+                                  )}
+                                </div>
+                              ))
+                            )}
+                          </div>
                           </TableCell>
                           <TableCell className="font-semibold">₹{order.total}</TableCell>
                           <TableCell>

@@ -19,6 +19,7 @@ export interface CartItem {
   quantity: number;
   weight: number;
   message?: string;
+  notes?: string;
   toppings?: string[];
 }
 

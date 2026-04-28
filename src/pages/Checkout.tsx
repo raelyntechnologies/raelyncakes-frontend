@@ -262,6 +262,9 @@ const Checkout = () => {
       items: items.map((item) => ({
         cake_id: item.cake.id,
         cake_name: item.cake.name,
+        cake_image: item.cake.image,
+        cake_message: item.message,
+        cake_notes: item.notes,
         weight: item.weight,
         quantity: item.quantity,
         price: item.cake.price

@@ -7,8 +7,6 @@ import {
   ShoppingCart,
   Minus,
   Plus,
-  Truck,
-  Shield,
   ArrowLeft,
   Upload,
 } from "lucide-react";
