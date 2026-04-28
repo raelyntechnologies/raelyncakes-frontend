@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Lock, User, Loader2, Phone, Calendar } from "lucide-react";
@@ -16,6 +16,10 @@ import { differenceInYears, format, isValid } from "date-fns";
 import API_URL from "@/config/api";
 
 const Signup = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 

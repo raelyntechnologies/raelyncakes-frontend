@@ -13,6 +13,10 @@ import { toast } from "@/hooks/use-toast";
 import API_URL from "@/config/api";
 
 const ChangePassword = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const navigate = useNavigate();
   
   // Get user from Redux store

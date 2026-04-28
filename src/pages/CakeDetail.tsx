@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -10,6 +10,7 @@ import {
   Truck,
   Shield,
   ArrowLeft,
+  Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
@@ -21,11 +22,17 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToCart, openCart } from "@/store/cartSlice";
 import { toggleFavorite, selectIsFavorite } from "@/store/favoritesSlice";
 import { getCakeImage } from "@/utils/cakeImages";
+import { Textarea } from "@/components/ui/textarea";
 
 const CakeDetail = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const cake = cakesData.find((c) => c.id === id);
+
+  // Scroll to top when cake detail page loads
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
   const [selectedWeight, setSelectedWeight] = useState(cake?.weights[0] || 1);
   const [quantity, setQuantity] = useState(1);
@@ -39,7 +46,7 @@ const CakeDetail = () => {
         <div className="container py-20 text-center">
           <h1 className="text-2xl font-bold">Cake not found</h1>
           <Link to="/cakes">
-            <Button className="mt-4">Back to Cakes</Button>
+            <Button className="mt-2">Back to Cakes</Button>
           </Link>
         </div>
         <Footer />
@@ -59,6 +66,20 @@ const CakeDetail = () => {
     dispatch(openCart());
   };
 
+  const [referenceImage, setReferenceImage] = useState<string | null>(null);
+  const [specialInstructions, setSpecialInstructions] = useState("");
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setReferenceImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -74,14 +95,14 @@ const CakeDetail = () => {
           Back to Cakes
         </Link>
 
-        <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className="mt-2 grid gap-8 lg:grid-cols-2 lg:gap-12 items-stretch">
           {/* Image */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="relative"
           >
-            <div className="aspect-square overflow-hidden rounded-3xl bg-card shadow-lifted">
+            <div className="h-full overflow-hidden rounded-3xl bg-card shadow-lifted">
               <img
                 src={imageUrl}
                 alt={cake.name}
@@ -121,18 +142,18 @@ const CakeDetail = () => {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="flex flex-col"
+            className="flex flex-col h-full justify-between"
           >
             <span className="text-sm font-medium uppercase tracking-wider text-secondary">
               {cake.category}
             </span>
 
-            <h1 className="mt-2 text-3xl font-bold text-foreground md:text-4xl">
+            <h1 className="mt-2 text-1xl font-bold text-foreground md:text-2xl">
               {cake.name}
             </h1>
 
             {/* Rating */}
-            <div className="mt-4 flex items-center gap-3">
+            <div className="mt-2 flex items-center gap-3">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -151,13 +172,13 @@ const CakeDetail = () => {
               </span>
             </div>
 
-            <p className="mt-6 text-lg text-muted-foreground">
+            <p className="mt-1 text-sm text-muted-foreground">
               {cake.description}
             </p>
 
             {/* Weight Selection */}
-            <div className="mt-8">
-              <h3 className="mb-3 font-semibold text-foreground">Select Weight</h3>
+            <div className="mt-1">
+              <h3 className="mb-2 font-semibold text-foreground">Select Weight</h3>
               <div className="flex flex-wrap gap-3">
                 {cake.weights.map((weight) => (
                   <button
@@ -176,21 +197,68 @@ const CakeDetail = () => {
             </div>
 
             {/* Message */}
-            <div className="mt-6">
+            <div className="mt-2">
               <h3 className="mb-3 font-semibold text-foreground">
-                Add a Message (Optional)
+                Cake Message (Ex: "Happy Birthday, Happy Anniversary")
               </h3>
-              <textarea
+              <Textarea
                 value={message}
+                maxLength={50}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Write your message on the cake..."
-                className="w-full rounded-xl border border-border bg-card p-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                rows={3}
+                rows={1}
               />
+              <p className="mt-2 text-sm text-muted-foreground">
+                  {message.length}/50 characters
+                </p>
             </div>
+            <div className="mt-2">
+            <h3 className="mb-3 font-semibold text-foreground">
+              Reference Image (Optional)
+            </h3>
+            <div className="flex items-center gap-4">
+              <label className="flex cursor-pointer items-center gap-2 rounded-xl border-2 border-dashed border-border px-6 py-4 transition-colors hover:border-primary">
+                <Upload className="h-5 w-10 text-muted-foreground" />
+                <span className="text-muted-foreground">
+                  Upload an image
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                />
+              </label>
+              {referenceImage && (
+                <img
+                  src={referenceImage}
+                  alt="Reference"
+                  className="h-20 w-20 rounded-lg object-cover"
+                />
+              )}
+              <p className="mt-2 text-sm text-muted-foreground">
+                  Custom cakes require at least 24 hours advance notice and prices may vary based on design complexity. Please contact us for more details.
+                </p>
+            </div>
+          </div>
+          <div className="mt-2">
+            <h3 className="mb-3 font-semibold text-foreground">
+              Special Instructions (Optional)
+            </h3>
+            <Textarea
+              value={specialInstructions}
+              maxLength={200}
+              placeholder="Any allergies, specific design requests, or other details..."
+              onChange={(e) => setSpecialInstructions(e.target.value)}
+              rows={1}
+            />
+            <p className="mt-2 text-sm text-muted-foreground">
+                  {specialInstructions.length}/200 characters
+                </p>
+          </div>
 
             {/* Quantity & Price */}
-            <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-4">
                 <span className="font-semibold text-foreground">Quantity:</span>
                 <div className="flex items-center gap-2">
@@ -223,7 +291,7 @@ const CakeDetail = () => {
             </div>
 
             {/* Actions */}
-            <div className="mt-8 flex gap-4">
+            <div className="mt-2 flex gap-4">
               <Button
                 variant="hero"
                 size="xl"
@@ -233,46 +301,17 @@ const CakeDetail = () => {
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Add to Cart
               </Button>
-              {/* <Button variant="secondary" size="xl" className="flex-1">
-                Buy Now
-              </Button> */}
-            </div>
-
-            {/* Delivery Info */}
-            <div className="mt-8 grid grid-cols-2 gap-4 rounded-2xl bg-muted p-6">
-              <div className="flex items-center gap-3">
-                <Truck className="h-5 w-5 text-secondary" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">
-                    Free Delivery
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    On orders above ₹999
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Shield className="h-5 w-5 text-secondary" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">
-                    100% Fresh
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Baked fresh daily
-                  </p>
-                </div>
-              </div>
             </div>
           </motion.div>
         </div>
 
         {/* Related Cakes */}
         {relatedCakes.length > 0 && (
-          <section className="mt-20">
+          <section className="mt-8">
             <h2 className="text-2xl font-bold text-foreground">
               You May Also Like
             </h2>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {relatedCakes.map((cake, index) => (
                 <CakeCard key={cake.id} cake={cake} index={index} />
               ))}

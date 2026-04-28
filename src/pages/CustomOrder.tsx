@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   Cake, 
@@ -64,6 +64,10 @@ const dietaryOptions = [
 ];
 
 const CustomOrder = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [step, setStep] = useState(1);
   const [selectedFlavor, setSelectedFlavor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");

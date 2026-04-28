@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { Heart, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -9,6 +10,10 @@ import { useAppSelector } from "@/store/hooks";
 import { selectFavorites } from "@/store/favoritesSlice";
 
 const Favorites = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const favorites = useAppSelector(selectFavorites);
 
   return (

@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -9,8 +10,17 @@ import { cakesData } from "@/data/cakes";
 import { FilterState } from "@/types/cake";
 
 const CakesPage = () => {
+  const [searchParams] = useSearchParams();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Get category from URL query parameter
+  const categoryFromUrl = searchParams.get("category");
+
   const [filters, setFilters] = useState<FilterState>({
-    category: "All",
+    category: categoryFromUrl || "All",
     occasion: "All",
     priceRange: [300, 5000],
     weight: null,

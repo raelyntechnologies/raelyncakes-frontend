@@ -19,6 +19,10 @@ import { useToast } from "@/hooks/use-toast";
 import API_URL from "@/config/api";
 
 const OrderSuccess = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { orderId } = useParams();
   console.log("Fetched order:", orderId);
 

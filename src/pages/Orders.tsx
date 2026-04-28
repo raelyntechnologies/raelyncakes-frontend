@@ -39,6 +39,10 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(`${API_URL}/orders/orders`, {
