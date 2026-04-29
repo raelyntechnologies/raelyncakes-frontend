@@ -60,12 +60,12 @@ const CakeDetail = () => {
   const imageUrl = getCakeImage(cake.image);
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ cake, weight: selectedWeight, message }));
+    dispatch(addToCart({ cake, weight: selectedWeight, message, notes }));
     dispatch(openCart());
   };
 
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
-  const [specialInstructions, setSpecialInstructions] = useState("");
+  const [notes, setNotes] = useState("");
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -244,14 +244,14 @@ const CakeDetail = () => {
               Special Instructions (Optional)
             </h3>
             <Textarea
-              value={specialInstructions}
+              value={notes}
               maxLength={200}
               placeholder="Any allergies, specific design requests, or other details..."
-              onChange={(e) => setSpecialInstructions(e.target.value)}
+              onChange={(e) => setNotes(e.target.value)}
               rows={1}
             />
             <p className="mt-2 text-sm text-muted-foreground">
-                  {specialInstructions.length}/200 characters
+                  {notes.length}/200 characters
                 </p>
           </div>
 

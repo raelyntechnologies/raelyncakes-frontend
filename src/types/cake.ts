@@ -20,7 +20,6 @@ export interface CartItem {
   weight: number;
   message?: string;
   notes?: string;
-  toppings?: string[];
 }
 
 export interface FilterState {

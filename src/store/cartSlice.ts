@@ -21,10 +21,10 @@ const cartSlice = createSlice({
         cake: Cake;
         weight: number;
         message?: string;
-        toppings?: string[];
+        notes?: string;
       }>
     ) => {
-      const { cake, weight, message, toppings } = action.payload;
+      const { cake, weight, message, notes } = action.payload;
       const existingItem = state.items.find(
         (item) => item.cake.id === cake.id && item.weight === weight
       );
@@ -32,7 +32,7 @@ const cartSlice = createSlice({
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
-        state.items.push({ cake, quantity: 1, weight, message, toppings });
+        state.items.push({ cake, quantity: 1, weight, message, notes });
       }
     },
     removeFromCart: (
