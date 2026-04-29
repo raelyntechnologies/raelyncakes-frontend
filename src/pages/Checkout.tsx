@@ -290,6 +290,8 @@ const Checkout = () => {
       }
     );
 
+    console.log(JSON.stringify(orderPayload));
+
     const data = await res.json();
 
     if (!res.ok) {
