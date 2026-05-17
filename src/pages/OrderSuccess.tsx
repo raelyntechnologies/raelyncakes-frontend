@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   CheckCircle,
@@ -14,26 +14,41 @@ import {
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { CartDrawer } from "@/components/CartDrawer";
 import { useToast } from "@/hooks/use-toast";
 import API_URL from "@/config/api";
 
 const OrderSuccess = () => {
+  const location = useLocation();
+  const { orderId } = useParams();
+  const { toast } = useToast();
+  const [order, setOrder] = useState(null); 
+  const [loading, setLoading] = useState(true);
+
+  // Get data from navigation state or URL params
+  const navigationState = location.state as any;
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const { orderId } = useParams();
-  console.log("Fetched order:", orderId);
-
-  const { toast } = useToast();
-  const [order, setOrder] = useState(null); 
-  const [loading, setLoading] = useState(true)
-  
   useEffect(() => {
+    // If order data was passed via state, use it directly
+    if (navigationState?.orderDetails) {
+      setOrder(navigationState.orderDetails);
+      setLoading(false);
+      return;
+    }
+
+    // Otherwise, fetch from API if orderId exists
+    const fetchOrderId = navigationState?.orderId || orderId;
+    if (!fetchOrderId) {
+      setLoading(false);
+      return;
+    }
+
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`${API_URL}/orders/details/${orderId}`, {
+        const response = await fetch(`${API_URL}/orders/details/${fetchOrderId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -54,8 +69,9 @@ const OrderSuccess = () => {
         setLoading(false);
       }
     };
+    
     fetchOrders();
-  }, []);
+  }, [navigationState]);
 
   if (!order) {
     return (
@@ -72,17 +88,9 @@ const OrderSuccess = () => {
     );
   }
 
-  const deliverySlotLabels: Record<string, string> = {
-    morning: "10:00 AM - 12:00 PM",
-    afternoon: "02:00 PM - 4:00 PM",
-    evening: "4:00 PM - 6:00 PM",
-    night: "6:00 PM - 8:00 PM",
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <CartDrawer />
 
       <div className="container py-12">
         <motion.div
@@ -169,69 +177,144 @@ const OrderSuccess = () => {
 
             {/* Delivery Details */}
             <div className="grid gap-4 border-t border-border pt-6 sm:grid-cols-2">
+              {/* Date */}
               <div className="flex items-start gap-3">
                 <Calendar className="mt-0.5 h-5 w-5 text-primary" />
                 <div>
                   <p className="text-sm text-muted-foreground">Delivery Date</p>
                   <p className="font-medium text-foreground">
-                    {new Date(order.delivery_date).toLocaleDateString("en-IN", {
+                    {order.delivery_date ? new Date(order.delivery_date).toLocaleDateString("en-IN", {
                       weekday: "long",
                       day: "numeric",
                       month: "long",
-                    })}
+                    }) : "N/A"}
                   </p>
                 </div>
               </div>
 
+              {/* Time */}
               <div className="flex items-start gap-3">
                 <Clock className="mt-0.5 h-5 w-5 text-primary" />
                 <div>
                   <p className="text-sm text-muted-foreground">Time Slot</p>
                   <p className="font-medium text-foreground">
-                    {deliverySlotLabels[order.delivery_slot]}
+                    {order.delivery_time ? order.delivery_time : "N/A"}
                   </p>
                 </div>
               </div>
 
-              {/* <div className="flex items-start gap-3 sm:col-span-2">
-                <MapPin className="mt-0.5 h-5 w-5 text-primary" />
+              {/* Name */}
+              <div className="flex items-start gap-3">
+                <Phone className="mt-0.5 h-5 w-5 text-primary" />
                 <div>
-                  <p className="text-sm text-muted-foreground">Delivery Address</p>
+                  <p className="text-sm text-muted-foreground">Name</p>
                   <p className="font-medium text-foreground">
-                    {order.address.name}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {order.address.street}, {order.address.city}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {order.address.state} - {order.address.pincode}
+                    {order.user_name || "N/A"}
                   </p>
                 </div>
-              </div> */}
+              </div>
+
+              {/* Location */}
+              <div className="flex items-start gap-3">
+                <MapPin className="mt-0.5 h-5 w-5 text-primary" />
+                <div>
+                  <p className="text-sm text-muted-foreground">Delivery Location</p>
+                  <p className="font-medium text-foreground">
+                    {order.location || "N/A"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Phone (full width on mobile, half on desktop) */}
+              <div className="flex items-start gap-3 sm:col-span-2">
+                <Phone className="mt-0.5 h-5 w-5 text-primary" />
+                <div>
+                  <p className="text-sm text-muted-foreground">Phone Number</p>
+                  <p className="font-medium text-foreground">
+                    {order.user_phone || "N/A"}
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Order Summary */}
             <div className="mt-6 border-t border-border pt-6">
-              <h4 className="mb-4 font-semibold text-foreground">Items Ordered</h4>
+              <h4 className="mb-4 font-semibold text-foreground">Cake Details</h4>
               <div className="space-y-3">
-                {order.items.map((item) => (
-                  <div
-                    key={`${item.cake_id}-${item.weight}`}
-                    className="flex justify-between text-sm"
-                  >
-                    <span className="text-muted-foreground">
-                      {item.cake_name} ({item.weight}kg) × {item.quantity}
-                    </span>
-                    <span className="font-medium text-foreground">
-                      ₹{(item.price * item.weight * item.quantity).toLocaleString()}
-                    </span>
+                {Array.isArray(order.items) ? (
+                  order.items.map((item: any) => (
+                    <div key={`${item.cake_id}-${item.weight}`} className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">
+                          {item.cake_name} ({item.weight}kg) × {item.quantity}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">
+                        {order.cake_name}
+                      </span>
+                      <span className="font-medium text-foreground">
+                        {order.cake_image && <span className="text-xs">🎂</span>}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm text-muted-foreground">
+                      <span>Weight: {order.weight}kg × Quantity: {order.quantity}</span>
+                    </div>
                   </div>
-                ))}
+                )}
+              </div>
+
+              {/* Cake Message */}
+              {order.cake_message && (
+                <div className="mt-4 rounded-lg bg-muted p-4">
+                  <p className="text-xs font-medium text-muted-foreground mb-1">Cake Message:</p>
+                  <p className="text-sm font-medium text-foreground">
+                    "{order.cake_message}"
+                  </p>
+                </div>
+              )}
+
+              {/* Special Instructions */}
+              {order.cake_notes && (
+                <div className="mt-3 rounded-lg bg-muted p-4">
+                  <p className="text-xs font-medium text-muted-foreground mb-1">Special Instructions:</p>
+                  <p className="text-sm text-foreground">
+                    {order.cake_notes}
+                  </p>
+                </div>
+              )}
+
+              {/* Price Breakdown */}
+              <div className="mt-4 space-y-2 border-t border-border pt-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Cake Price:</span>
+                  <span className="font-medium text-foreground">₹{(order.subtotal || 0).toLocaleString()}</span>
+                </div>
+                {order.delivery_fee > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Delivery Fee:</span>
+                    <span className="font-medium text-foreground">₹{(order.delivery_fee || 0).toLocaleString()}</span>
+                  </div>
+                )}
               </div>
 
               <div className="mt-4 flex justify-between border-t border-border pt-4 text-lg font-bold">
-                <span className="text-foreground">Total Paid</span>
-                <span className="text-foreground">₹{order.total.toLocaleString()}</span>
+                <span className="text-foreground">Total Amount</span>
+                <span className="text-primary">₹{(order.total || 0).toLocaleString()}</span>
+              </div>
+
+              {/* Payment Method */}
+              <div className="mt-4 rounded-lg bg-muted p-3">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-muted-foreground">Payment Method:</span>
+                  <span className="font-medium text-foreground capitalize">
+                    {order.payment_method === "cod" ? "Cash on Delivery" : order.payment_method || "N/A"}
+                  </span>
+                </div>
               </div>
             </div>
           </div>

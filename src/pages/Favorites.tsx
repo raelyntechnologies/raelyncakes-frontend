@@ -4,7 +4,6 @@ import { Heart, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { CartDrawer } from "@/components/CartDrawer";
 import { CakeCard } from "@/components/CakeCard";
 import { useAppSelector } from "@/store/hooks";
 import { selectFavorites } from "@/store/favoritesSlice";
@@ -19,7 +18,6 @@ const Favorites = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <CartDrawer />
 
       <section className="gradient-hero py-12">
         <div className="container">

@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { CartDrawer } from "@/components/CartDrawer";
 import { useAppDispatch } from "@/store/hooks";
 import { loginSuccess } from "@/store/authSlice";
 import { toast } from "@/hooks/use-toast";
@@ -190,7 +189,6 @@ const Signup = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <CartDrawer />
 
       <div className="container flex min-h-[calc(100vh-200px)] items-center justify-center py-12">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">

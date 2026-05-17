@@ -56,7 +56,7 @@ const AdminOrders = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [orders, setOrders] = useState([]); 
+  const [orders, setOrders] = useState<any[]>([]); 
   const [loading, setLoading] = useState(true);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -90,22 +90,50 @@ const AdminOrders = () => {
   }, []);
 
   const statusCounts = useMemo(() => {
-    const counts: Record<string, number> = { all: orders.length };
-    orders.forEach((order) => {
-      counts[order.status] = (counts[order.status] || 0) + 1;
-    });
-    return counts;
-  }, [orders]);
+  const counts: Record<string, number> = {
+    all: orders.length,
+  };
+
+  orders.forEach((order) => {
+    const status = order.status ?? "pending";
+    counts[status] = (counts[status] || 0) + 1;
+  });
+
+  return counts;
+}, [orders]);
 
   const filteredOrders = useMemo(() => {
-    return orders.filter((order) => {
-      const matchesSearch =
-        String(order.id).toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.user_phone.includes(searchQuery);
-      const matchesStatus = statusFilter === "all" || order.status === statusFilter;
-      return matchesSearch && matchesStatus;
-    });
-  }, [orders, searchQuery, statusFilter]);
+  return orders.filter((order) => {
+    const search = searchQuery.toLowerCase();
+
+    const matchesSearch =
+      String(order.id ?? "")
+        .toLowerCase()
+        .includes(search) ||
+
+      String(order.user_name ?? "")
+        .toLowerCase()
+        .includes(search) ||
+
+      String(order.user_phone ?? "")
+        .toLowerCase()
+        .includes(search) ||
+
+      String(order.cake_name ?? "")
+        .toLowerCase()
+        .includes(search) ||
+
+      String(order.location ?? "")
+        .toLowerCase()
+        .includes(search);
+
+    const matchesStatus =
+      statusFilter === "all" ||
+      order.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+}, [orders, searchQuery, statusFilter]);
 
   const handleUpdateStatus = async (orderId: string, status: OrderStatus) => {
   try {
@@ -192,7 +220,7 @@ const AdminOrders = () => {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search by order ID or phone..."
+            placeholder="Search by ID, customer, phone, cake or location..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -225,25 +253,29 @@ const AdminOrders = () => {
                     <TableRow>
                       <TableHead>Order ID</TableHead>
                       <TableHead>Customer</TableHead>
-                      <TableHead>Address</TableHead>
-                      <TableHead>Items</TableHead>
-                      <TableHead>Total</TableHead>
+                      <TableHead>Location</TableHead>
+                      <TableHead>Cake</TableHead>
+                      <TableHead>Pricing</TableHead>
                       <TableHead>Delivery</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Payment</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {(filteredOrders ?? []).map((order, index) => {
-                      const deliveryDate = order.delivery_date ? new Date(order.delivery_date) : null;
-                      const deliveryDateText = deliveryDate && isValid(deliveryDate)
+
+                      const deliveryDate = order.delivery_date? new Date(order.delivery_date): null;
+
+                      const deliveryDateText =
+                      deliveryDate && isValid(deliveryDate)
                         ? format(deliveryDate, "MMM d, yyyy")
                         : "Invalid date";
 
-                      const statusMeta = statusConfig[order.status] ?? defaultStatusConfig;
+                      const statusMeta =
+                        statusConfig[order.status as OrderStatus] ??
+                        defaultStatusConfig;
+
                       const StatusIcon = statusMeta.icon;
-                      const items = order.items ?? [];
 
                       return (
                         <motion.tr
@@ -258,54 +290,56 @@ const AdminOrders = () => {
                           </TableCell>
                           <TableCell>
                             <div>
-                              <p className="font-medium">{order.address.name}</p>
-                              <p className="font-medium">{order.user_phone}</p>
+                              <p className="font-medium">
+                                {order.user_name || "N/A"}
+                              </p>
+
+                              <p className="text-sm text-muted-foreground">
+                                {order.user_phone || "N/A"}
+                              </p>
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div>
-                              <p>{order.address.street}</p>
-                              <p>{order.address.city}, {order.address.state} {order.address.pincode}</p>
-                            </div>
+                            <p>{order.location || "N/A"}</p>
                           </TableCell>
                           <TableCell>
-                            <div className="max-w-[400px] space-y-2">
-                            {items.length === 0 ? (
-                              <p className="text-sm text-muted-foreground">No items</p>
-                            ) : (
-                              items.map((item, i) => (
-                                <div key={i} className="text-sm border-b pb-2 last:border-0">
-                                  
-                                  {/* Main Line */}
-                                  <p className="font-medium truncate">
-                                    {item.quantity}x {item.cake_name} ({item.weight}kg)
-                                  </p>
+                            <div className="max-w-[400px] text-sm space-y-2">
 
-                                  {/* Message */}
-                                  {item.cake_message && (
-                                    <p className="text-muted-foreground break-words">
-                                      <span className="font-medium text-foreground">Message:</span>{" "}
-                                      {item.cake_message}
-                                    </p>
-                                  )}
+                              <p className="font-medium truncate">
+                                {order.quantity}x {order.cake_name}
+                                {order.weight && ` (${order.weight}kg)`}
+                              </p>
 
-                                  {/* Notes */}
-                                  {item.cake_notes && (
-                                    <p className="text-muted-foreground break-words">
-                                      <span className="font-medium text-foreground">Notes:</span>{" "}
-                                      {item.cake_notes}
-                                    </p>
-                                  )}
-                                </div>
-                              ))
-                            )}
-                          </div>
+                              {order.cake_message && (
+                                <p className="text-muted-foreground break-words">
+                                  <span className="font-medium text-foreground">
+                                    Message:
+                                  </span>{" "}
+                                  {order.cake_message}
+                                </p>
+                              )}
+
+                              {order.cake_notes && (
+                                <p className="text-muted-foreground break-words">
+                                  <span className="font-medium text-foreground">
+                                    Notes:
+                                  </span>{" "}
+                                  {order.cake_notes}
+                                </p>
+                              )}
+
+                            </div>
                           </TableCell>
-                          <TableCell className="font-semibold">₹{order.total}</TableCell>
+                          <TableCell className="font-semibold">
+                            ₹{Number(order.total ?? 0).toLocaleString()}
+                          </TableCell>
                           <TableCell>
                             <div className="text-sm">
                               <p>{deliveryDateText}</p>
-                              <p className="text-xs text-muted-foreground">{order.delivery_slot || "N/A"}</p>
+
+                              <p className="text-xs text-muted-foreground">
+                                {order.delivery_time || "N/A"}
+                              </p>
                             </div>
                           </TableCell>
                           <TableCell>
@@ -315,13 +349,6 @@ const AdminOrders = () => {
                             >
                               <StatusIcon className="w-3 h-3" />
                               {statusMeta.label}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <Badge
-                              variant={order.payment_status === "paid" ? "default" : "secondary"}
-                            >
-                              {order.payment_method?.toUpperCase()} - {order.payment_status}
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">

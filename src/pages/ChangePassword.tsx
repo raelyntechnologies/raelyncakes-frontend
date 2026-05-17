@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { CartDrawer } from "@/components/CartDrawer";
 import { useAppSelector } from "@/store/hooks";
 import { toast } from "@/hooks/use-toast";
 import API_URL from "@/config/api";
@@ -124,7 +123,6 @@ const ChangePassword = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <CartDrawer />
 
       <div className="container flex min-h-[calc(100vh-200px)] items-center justify-center py-12">
         <motion.div 

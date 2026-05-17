@@ -245,18 +245,6 @@ export const Header = () => {
                 </Button>
               </Link>
             )}
-            
-            {/* Cart Button */}
-            <Button
-              variant="soft"
-              size="icon"
-              className="relative h-10 w-10"
-              onClick={() => dispatch(openCart())}
-              aria-label={`View cart with ${cartItemCount} items`}
-            >
-              <ShoppingCart className="h-5 w-5" />
-              <CartBadge count={cartItemCount} />
-            </Button>
 
             {/* Mobile Menu Button */}
             <Button

@@ -13,9 +13,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
-import CustomOrder from "./pages/CustomOrder";
 import Favorites from "./pages/Favorites";
 import Orders from "./pages/Orders";
 import NotFound from "./pages/NotFound";
@@ -45,9 +43,7 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/custom" element={<CustomOrder />} />
             <Route path="/favorites" element={<Favorites />} />
-            <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-success/:orderId" element={<OrderSuccess />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/changepassword" element={<ChangePassword />} />

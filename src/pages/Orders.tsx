@@ -10,7 +10,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { CartDrawer } from "@/components/CartDrawer";
 import { setLoading } from "@/store/authSlice";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -50,11 +49,15 @@ const Orders = () => {
           headers: {
             "Content-Type": "application/json",
             ...(localStorage.getItem("access_token") && {
-              "Authorization": `Bearer ${localStorage.getItem("access_token")}`
-            })
-          }
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            }),
+          },
         });
-        if (!response.ok) throw new Error("Failed to fetch orders");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch orders");
+        }
+
         const data = await response.json();
         setOrders(data);
       } catch (error: any) {
@@ -66,16 +69,19 @@ const Orders = () => {
         setLoading(false);
       }
     };
+
     fetchOrders();
   }, []);
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <CartDrawer />
 
       <div className="container py-8">
-        <h1 className="text-3xl font-bold text-foreground">My Orders</h1>
+        <h1 className="text-3xl font-bold text-foreground">
+          My Orders
+        </h1>
+
         <p className="mt-2 text-muted-foreground">
           Track and manage your cake orders
         </p>
@@ -89,12 +95,15 @@ const Orders = () => {
             <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-muted">
               <ShoppingBag className="h-12 w-12 text-muted-foreground" />
             </div>
+
             <h2 className="text-xl font-semibold text-foreground">
               No orders yet
             </h2>
+
             <p className="mt-2 text-muted-foreground">
               Start ordering delicious cakes today!
             </p>
+
             <Link to="/cakes">
               <Button variant="hero" size="xl" className="mt-6">
                 Browse Cakes
@@ -103,7 +112,7 @@ const Orders = () => {
           </motion.div>
         ) : (
           <div className="mt-8 space-y-4">
-            {orders.map((order, index) => (
+            {orders.map((order: any, index) => (
               <motion.div
                 key={order.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -119,11 +128,13 @@ const Orders = () => {
                       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                         <Package className="h-6 w-6 text-primary" />
                       </div>
+
                       <div>
                         <div className="flex items-center gap-3">
                           <h3 className="font-semibold text-foreground">
                             {order.id}
                           </h3>
+
                           <span
                             className={`rounded-full px-3 py-1 text-xs font-medium ${
                               statusColors[order.status]
@@ -132,23 +143,28 @@ const Orders = () => {
                             {statusLabels[order.status]}
                           </span>
                         </div>
+
                         <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
-                            {new Date(order.created_at).toLocaleDateString("en-IN", {
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                            })}
+                            {order.delivery_date}
                           </span>
-                          {/* <span className="flex items-center gap-1">
+
+                          <span className="flex items-center gap-1">
+                            <Package className="h-4 w-4" />
+                            {order.delivery_time}
+                          </span>
+
+                          <span className="flex items-center gap-1">
                             <MapPin className="h-4 w-4" />
-                            {order.address.city}
-                          </span> */}
+                            {order.location}
+                          </span>
                         </div>
+
                         <p className="mt-2 text-sm text-muted-foreground">
-                          {order.items.length} item{order.items.length !== 1 && "s"} •{" "}
-                          {order.items.map((i) => i.cake_name).join(", ")}
+                          {order.quantity} item
+                          {order.quantity !== 1 && "s"} •{" "}
+                          {order.cake_name}
                         </p>
                       </div>
                     </div>
@@ -156,12 +172,16 @@ const Orders = () => {
                     <div className="flex items-center gap-4">
                       <div className="text-right">
                         <p className="text-lg font-bold text-foreground">
-                          ₹{order.total.toLocaleString()}
+                          ₹{order.total?.toLocaleString()}
                         </p>
+
                         <p className="text-xs text-muted-foreground">
-                          {order.payment_method === "cod" ? "Cash on Delivery" : "Paid via UPI"}
+                          {order.payment_method === "cod"
+                            ? "Cash on Delivery"
+                            : "Paid via UPI"}
                         </p>
                       </div>
+
                       <ChevronRight className="h-5 w-5 text-muted-foreground" />
                     </div>
                   </div>

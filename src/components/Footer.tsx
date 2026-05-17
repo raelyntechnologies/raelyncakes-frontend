@@ -19,30 +19,6 @@ export const Footer = () => {
 
   return (
     <footer className="bg-foreground text-primary-foreground">
-      {/* Newsletter Section */}
-      <div className="border-b border-primary-foreground/10">
-        <div className="container py-12">
-          <div className="flex flex-col items-center justify-between gap-6 lg:flex-row">
-            <div>
-              <h3 className="text-2xl font-bold">Get Sweet Updates!</h3>
-              <p className="mt-1 text-primary-foreground/70">
-                Subscribe for exclusive offers and new cake launches
-              </p>
-            </div>
-            <div className="flex w-full max-w-md gap-2">
-              <input
-                type="phone"
-                placeholder="Enter your phone number"
-                className="flex-1 rounded-xl bg-primary-foreground/10 px-4 py-3 text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <Button variant="hero" size="lg">
-                Subscribe
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Footer */}
       <div className="container py-12">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">

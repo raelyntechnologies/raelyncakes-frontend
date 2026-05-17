@@ -5,7 +5,6 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CakeCard } from "@/components/CakeCard";
 import { CakeFilters } from "@/components/CakeFilters";
-import { CartDrawer } from "@/components/CartDrawer";
 import { cakesData } from "@/data/cakes";
 import { FilterState } from "@/types/cake";
 
@@ -82,7 +81,6 @@ const CakesPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <CartDrawer />
 
       {/* Page Header */}
       <section className="gradient-hero py-12">

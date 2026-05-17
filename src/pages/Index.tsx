@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CakeCard } from "@/components/CakeCard";
-import { CartDrawer } from "@/components/CartDrawer";
 import { cakesData } from "@/data/cakes";
 
 // Import images
@@ -45,7 +44,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <CartDrawer />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden gradient-hero">

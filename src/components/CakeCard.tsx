@@ -20,13 +20,6 @@ export const CakeCard = ({ cake, index = 0 }: CakeCardProps) => {
   const isLiked = useAppSelector(selectIsFavorite(cake.id));
   const [selectedWeight, setSelectedWeight] = useState(cake.weights[0]);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dispatch(addToCart({ cake, weight: selectedWeight }));
-    dispatch(openCart());
-  };
-
   const toggleLike = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -87,23 +80,6 @@ export const CakeCard = ({ cake, index = 0 }: CakeCardProps) => {
                 }`}
               />
             </motion.button>
-
-            {/* Quick Add Button */}
-            {/* <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileHover={{ opacity: 1, y: 0 }}
-              className="absolute bottom-3 left-3 right-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            >
-              <Button
-                variant="hero"
-                size="lg"
-                className="w-full"
-                onClick={handleAddToCart}
-              >
-                <ShoppingCart className="h-4 w-4" />
-                Add to Cart
-              </Button>
-            </motion.div> */}
           </div>
 
           {/* Content */}
