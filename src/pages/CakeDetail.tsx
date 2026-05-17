@@ -490,8 +490,6 @@ const handlePlaceOrder = async () => {
       payment_method: paymentMethod,
     };
 
-    console.log("ORDER PAYLOAD:", orderPayload);
-
     // =====================================================
     // API Call
     // =====================================================
